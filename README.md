@@ -69,7 +69,9 @@ $response = $payment->createPayment([
 ]);
 
 ```
-4. Check the status of the payment (that it has been paid and has status of executed) by polling the following method passing in the simp_id from the previous response
+4. In your code follow the TrueLayer link to authorise payment with bank
+
+5. Once returned to site check the status of the payment (that it has been paid and has status of executed) by polling the following method passing in the simp_id from the previous response
 
 ```
 $response = $payment->getPaymentStatus($response['simp_id']);
