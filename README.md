@@ -1,5 +1,7 @@
 # TrueLayer Payments Package
 
+** WIP - Testing **
+
 Allows taking payments via the [TrueLayer](https://truelayer.com/) Fintech API
 
 ## Authentication
