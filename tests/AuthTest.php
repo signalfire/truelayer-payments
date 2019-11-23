@@ -19,8 +19,6 @@ final class AuthTest extends TestCase
 
     public function testAuthReturnsToken()
     {
-        //$request = $this->createMock(Request::class);
-
         $this->request->method('makeRequest')->willReturn([
             'statusCode' => 200,
             'reason' => 'OK',
