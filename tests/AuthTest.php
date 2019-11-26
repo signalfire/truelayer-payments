@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Signalfire\TruePayments\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 use Signalfire\TruePayments\Auth;
@@ -25,7 +27,7 @@ final class AuthTest extends TestCase
             'body' => [
                 'access_token' => 'jwt',
                 'expires_in' => 3600,
-                'token_type' => 'Bearer'                
+                'token_type' => 'Bearer'
             ]
         ]);
 
@@ -53,7 +55,7 @@ final class AuthTest extends TestCase
 
         $auth = new Auth($this->request, $credentials);
 
-        $response = $auth->getAccessToken();   
+        $response = $auth->getAccessToken();
         
         $this->assertTrue((bool)$response['error']);
         $this->assertEquals($response['reason'], 'ABCD');

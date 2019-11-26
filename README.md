@@ -90,3 +90,6 @@ $response = $payment->createPayment([
 ```
 $response = $payment->getPaymentStatus($_GET['payment_id']);
 ```
+
+## TODO
+! More tests !
