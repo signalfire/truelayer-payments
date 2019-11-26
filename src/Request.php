@@ -33,11 +33,10 @@ class Request extends Client
     ) : array {
         try {
             $response = $this->request($method, $endpoint, $data);
-            $body = json_decode($response->getBody(), true);
             return [
                 'statusCode' => $response->getStatusCode(),
                 'reason' => $response->getReasonPhrase(),
-                'body' => $body
+                'body' => json_decode($response->getBody(), true)
             ];
         } catch (\Exception $ex) {
             return [

@@ -92,7 +92,7 @@ class Payment
     /**
      * Poll TrueLayer for payment status
      *
-     * @param string $paymentId Payment ID
+     * @param string $paymentId Payment Identifier (simp_id)
      * @param string $endpoint  API Endpoint with interpolation placeholder
      * @param string $method    Method to use (GET, POST etc)
      *
@@ -103,10 +103,7 @@ class Payment
         string $endpoint = '/single-immediate-payments/%s',
         string $method = 'GET'
     ) : array {
-        return $this->request->makeRequest(
-            $this->getPaymentIdEndpoint($endpoint, $paymentId),
-            $method,
-            $this->getAuthHeader(),
-        );
+        $data = ['headers' => $this->getAuthHeader()];
+        return $this->request->makeRequest($this->getPaymentIdEndpoint($endpoint, $paymentId), $method, $data);
     }
 }

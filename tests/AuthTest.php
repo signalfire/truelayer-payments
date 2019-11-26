@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Signalfire\TruePayments\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Mockery;
 
 use Signalfire\TruePayments\Auth;
 use Signalfire\TruePayments\Credentials;
@@ -12,52 +13,45 @@ use Signalfire\TruePayments\Request;
 
 final class AuthTest extends TestCase
 {
-    private $request;
+    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-    public function setUp() : void
+    public function testAuthHasMethods()
     {
-        $this->request = $this->createMock(Request::class);
-    }
-
-    public function testAuthReturnsToken()
-    {
-        $this->request->method('makeRequest')->willReturn([
-            'statusCode' => 200,
-            'reason' => 'OK',
-            'body' => [
-                'access_token' => 'jwt',
-                'expires_in' => 3600,
-                'token_type' => 'Bearer'
-            ]
-        ]);
+        $request = Mockery::mock(Request::class);
 
         $credentials = new Credentials('ABC', '123');
 
-        $auth = new Auth($this->request, $credentials);
-
-        $response = $auth->getAccessToken();
-
-        $this->assertEquals($response['statusCode'], 200);
-        $this->assertEquals($response['reason'], 'OK');
-        $this->assertEquals($response['body']['access_token'], 'jwt');
-        $this->assertEquals($response['body']['expires_in'], 3600);
-        $this->assertEquals($response['body']['token_type'], 'Bearer');
+        $auth = new Auth($request, $credentials);
+        
+        $this->assertTrue(method_exists($auth, 'getAccessToken'));
     }
 
-    public function testAuthReturnsError()
+    public function testAuthGetAccessToken()
     {
-        $this->request->method('makeRequest')->willReturn([
-            'error' => true,
-            'reason' => 'ABCD',
-        ]);
+        $request = Mockery::mock(Request::class);
+        $request->shouldReceive('makeRequest')
+            ->withArgs([
+                '/connect/token',
+                'POST',
+                [
+                    'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+                    'form_params' => [
+                        'client_id' => 'ABC',
+                        'client_secret' => '123',
+                        'scope' => 'payments',
+                        'grant_type' => 'client_credentials'
+                    ]
+                ]
+            ])
+            ->times(1)
+            ->andReturn([]);
 
         $credentials = new Credentials('ABC', '123');
 
-        $auth = new Auth($this->request, $credentials);
+        $auth = new Auth($request, $credentials);
 
         $response = $auth->getAccessToken();
         
-        $this->assertTrue((bool)$response['error']);
-        $this->assertEquals($response['reason'], 'ABCD');
+        $this->assertIsArray($response);
     }
 }
