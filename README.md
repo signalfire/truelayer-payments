@@ -102,6 +102,3 @@ $response = $payment->getPaymentStatus($_GET['payment_id']);
 ## Tests
 
 To run tests call ```composer test```
-
-## TODO
-! More tests !
