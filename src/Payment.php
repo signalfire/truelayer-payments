@@ -33,6 +33,42 @@ class Payment
     }
 
     /**
+     * Get authorization (bearer) header
+     *
+     * @return array
+     */
+    private function getAuthHeader() : array
+    {
+        return [
+            'Authorization' => sprintf('Bearer %s', $this->token)
+        ];
+    }
+
+    /**
+     * Get JSON content type header
+     *
+     * @return array
+     */
+    private function getJsonHeader() : array
+    {
+        return [
+            'Content-Type' => 'application/json'
+        ];
+    }
+
+    /**
+     * Combine enpoint and paymentId to get url
+     *
+     * @param string $endpoint  Endpoint url including replacement placeholder
+     * @param string $paymentId PaymentId to interpolate in Endpoint url
+     * @return string
+     */
+    private function getPaymentIdEndpoint(string $endpoint, string $paymentId)
+    {
+        return sprintf($endpoint, $paymentId);
+    }
+
+    /**
      * Create and send a payment request
      *
      * @param array  $payload  Payment payload to send
@@ -46,23 +82,18 @@ class Payment
         string $endpoint = '/single-immediate-payments',
         string $method = 'POST'
     ) : array {
-        return $this->request->makeRequest(
-            $endpoint,
-            $method,
-            [
-                'Authorization' => sprintf('Bearer %s', $this->token),
-                'Content-Type' => 'application/json'
-            ],
-            $payload,
-            $timeout
-        );
+        $data = [
+            'headers' => array_merge($this->getAuthHeader(), $this->getJsonHeader()),
+            'body' => json_encode($payload)
+        ];
+        return $this->request->makeRequest($endpoint, $method, $data);
     }
 
     /**
      * Poll TrueLayer for payment status
      *
      * @param string $paymentId Payment ID
-     * @param string $endpoint  API Endpoint
+     * @param string $endpoint  API Endpoint with interpolation placeholder
      * @param string $method    Method to use (GET, POST etc)
      *
      * @return array
@@ -73,11 +104,9 @@ class Payment
         string $method = 'GET'
     ) : array {
         return $this->request->makeRequest(
-            sprintf($endpoint, $paymentId),
+            $this->getPaymentIdEndpoint($endpoint, $paymentId),
             $method,
-            ['Authorization' => sprintf('Bearer %s', $this->token)],
-            [],
-            $timeout
+            $this->getAuthHeader(),
         );
     }
 }

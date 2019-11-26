@@ -22,28 +22,18 @@ class Request extends Client
      *
      * @param string $endpoint Endpoint for request
      * @param string $method   Method (GET, POST) to use for request
-     * @param array  $headers  HTTP Headers
-     * @param array  $payload  Payload to send in request
+     * @param array  $data     Data to send (header, body etc)
      *
      * @return array
      */
     public function makeRequest(
         string $endpoint,
         string $method,
-        array $headers = [],
-        array $payload = []
+        array $data = []
     ) : array {
-
         try {
-            $response = $this->request(
-                $method,
-                $endpoint,
-                $headers,
-                $payload
-            );
-
+            $response = $this->request($method, $endpoint, $data);
             $body = json_decode($response->getBody(), true);
-
             return [
                 'statusCode' => $response->getStatusCode(),
                 'reason' => $response->getReasonPhrase(),

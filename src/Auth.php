@@ -33,29 +33,31 @@ class Auth
     /**
      * Return an access token from TrueLayer
      *
-     * @param string $endpoint  API Endpoint
-     * @param string $method    Method to use (GET, POST etc)
-     * @param string $scope     API request scope
-     * @param string $grantType API grant type
+     * @param string $endpoint API Endpoint
+     * @param string $method   Method to use (GET, POST etc)
+     * @param string $scope    API request scope
+     * @param string $grant    API grant type
      *
      * @return array
      */
     public function getAccessToken(
         $endpoint = '/connect/token',
         $method = 'POST',
-        $scope = 'payment',
-        $grantType = 'client_credentials'
+        $scope = 'payments',
+        $grant = 'client_credentials'
     ) : array {
         return $this->request->makeRequest(
             $endpoint,
             $method,
-            ['Content-Type' => 'application/x-www-form-urlencoded'],
-            ['form_params' => [
-                'client_id' => $this->credentials->getClientId(),
-                'client_secret' => $this->credentials->getClientSecret(),
-                'scope' => $scope,
-                'grant_type' => $grantType
-            ]]
+            [
+                'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+                'form_params' => [
+                    'client_id' => $this->credentials->getClientId(),
+                    'client_secret' => $this->credentials->getClientSecret(),
+                    'scope' => $scope,
+                    'grant_type' => $grant
+                ]
+            ]
         );
     }
 }

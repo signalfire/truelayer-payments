@@ -1,18 +1,16 @@
 # TrueLayer Payments Package
 
-** WIP - Testing **
-
 Allows taking payments via the [TrueLayer](https://truelayer.com/) Fintech API
 
 ## Authentication
 
 To make a payment request we first have to get a token. To do this we must authenticate with TrueLayer...
 
-1. Firstly create a instance of the request class
+1. Firstly create a instance of the request class. This is assuming sandbox. Change URL's when live.
 
 ```
 $request = new Signalfire\TruePayments\Request([
-  'base_uri' => 'https://auth.truelayer.com',
+  'base_uri' => 'https://auth.truelayer-sandbox.com',
   'timeout'  => 60,
 ]);
 ```
@@ -32,7 +30,7 @@ $auth = new Signalfire\TruePayments\Auth($request, $credentials);
 4. Call the getAccessToken method
 
 ```
-$token = $auth->getAccessToken();
+$response = $auth->getAccessToken();
 ```
 
 5. The method will return an array containing the token to use. The token will be a child of the body element of the returned array in a key of access_token. If there is an error an array containing the element error = true will be returned along with the reason.
@@ -43,7 +41,7 @@ $token = $auth->getAccessToken();
 
 ```
 $request = new Signalfire\TruePayments\Request([
-   'base_uri' => 'https://pay-api.truelayer.com',
+   'base_uri' => 'https://pay-api.truelayer-sandbox.com',
    'timeout'  => 60,
 ]);
 ```
@@ -69,10 +67,10 @@ $response = $payment->createPayment([
 ]);
 
 ```
-4. In your code follow the TrueLayer link to authorise payment with bank
+4. In your code follow the TrueLayer link to authorise payment directly with bank. This is found as the first element in a results array inside body in response (so $response['body']['results'][0]['auth_uri'])
 
-5. Once returned to site check the status of the payment (that it has been paid and has status of executed) by polling the following method passing in the simp_id from the previous response
+5. You will be returned back to the page on your site that you passed as 'redirect_uri' when you created the payment (This URI has to be whitelisted in the TrueLayer console). Once returned to site to check the status of the payment (that it has been paid and has status of executed) by calling the following method passing in the payment_id appended to the 'redirect_uri' on returning to your site.
 
 ```
-$response = $payment->getPaymentStatus($response['simp_id']);
+$response = $payment->getPaymentStatus($_GET'payment_id']);
 ```

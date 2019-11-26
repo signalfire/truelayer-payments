@@ -35,7 +35,7 @@ class Credentials
      *
      * @return string
      */
-    public function getClientId()
+    public function getClientId() : string
     {
         return $this->clientId;
     }
@@ -45,7 +45,7 @@ class Credentials
      *
      * @return string
      */
-    public function getClientSecret()
+    public function getClientSecret() : string
     {
         return $this->clientSecret;
     }
