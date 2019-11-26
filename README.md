@@ -36,15 +36,26 @@ $response = $auth->getAccessToken();
 5. The method will return an array containing the token to use. The token will be a child of the body element of the returned array in a key of access_token. If there is an error an array containing the element error = true will be returned along with the reason.
 
 ```
+On success...
+
 [
-    [statusCode] => 200
-    [reason] => OK
-    [body] => [
-      [access_token] => ...
-      [expires_in] => 3600
-      [token_type] => Bearer
-      [scope] => payments
-    ]
+  [statusCode] => 200
+  [reason] => OK
+  [body] => [
+    [access_token] => ...
+    [expires_in] => 3600
+    [token_type] => Bearer
+    [scope] => payments
+  ]
+]
+```
+
+```
+On failure...
+
+[
+  [error] => true,
+  [reason] => ...
 ]
 ```
 
