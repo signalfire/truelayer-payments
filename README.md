@@ -1,5 +1,7 @@
 # TrueLayer Payments Package
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2242da11423415e840699cf87b71026)](https://www.codacy.com/manual/signalfire/truelayer-payments?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=signalfire/truelayer-payments&amp;utm_campaign=Badge_Grade)
+
 Allows taking payments via the [TrueLayer](https://truelayer.com/) Fintech API
 
 ## Authentication
