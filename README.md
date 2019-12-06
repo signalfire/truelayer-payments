@@ -91,13 +91,13 @@ $response = $payment->createPayment([
 ]);
 
 ```
-4.  In your code follow the TrueLayer link to authorise payment directly with bank. This is found as the first element in a results array inside body in response (so $response['body']['results'][0]['auth_uri'])
+4.  In your code follow the TrueLayer link to authorise payment directly with bank. This is found as the first element in a results array inside body in response...
+
+```$response['body']['results'][0]['auth_uri']```
 
 5.  You will be returned back to the page on your site that you passed as 'redirect_uri' when you created the payment (This URI has to be whitelisted in the TrueLayer console). Once returned to site to check the status of the payment (that it has been paid and has status of executed) by calling the following method passing in the payment_id appended to the 'redirect_uri' on returning to your site.
 
-```
-$response = $payment->getPaymentStatus($_GET['payment_id']);
-```
+```$response = $payment->getPaymentStatus($_GET['payment_id']);```
 
 ## Tests
 
