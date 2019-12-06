@@ -71,7 +71,7 @@ $request = new Signalfire\TruePayments\Request([
 
 2.  Create an instance of the payment class, passing in the request and token from body
 
-```
+```php
 $payment = new Signalfire\TruePayments\Payment($request, $token['body']['access_token']);
 ```
 
